@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+*.log
+*.db
+*.sqlite
+*.env
+.env
+silentlink-env/
+clients/session.json
+logs/
+*.bak
+*.tar.gz
+*.zip
+.vscode/
+.idea/
+.DS_Store
+backups/

@@ -1,0 +1,81 @@
+# Configuration file for Synapse.
+#
+# This is a YAML file: see [1] for a quick introduction. Note in particular
+# that *indentation is important*: all the elements of a list or dictionary
+# should have the same indentation.
+#
+# [1] https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html
+#
+# For more information on how to configure Synapse, including a complete accounting of
+# each option, go to docs/usage/configuration/config_documentation.md or
+# https://element-hq.github.io/synapse/latest/usage/configuration/config_documentation.html
+server_name: "localhost"
+pid_file: /home/user/SilentLink/homeserver.pid
+listeners:
+  - port: 8008
+    tls: false
+    type: http
+    x_forwarded: true
+    bind_addresses: ['::1', '127.0.0.1']
+    resources:
+      - names: [client, federation]
+        compress: false
+database:
+  name: psycopg2
+  args:
+    user: silentlink_user
+    password: ERYx@03_15
+    database: active_messages
+    host: 127.0.0.1
+    port: 5432
+log_config: "/home/user/SilentLink/config/localhost.log.config"
+media_store_path: /home/user/SilentLink/media_store
+
+# === Rate Limiting ===
+rc_messages_per_second: 100.0
+rc_message_burst_count: 1000
+federation_rc_window_size: 100000
+federation_rc_sleep_limit: 1000
+federation_rc_sleep_delay: 100
+federation_rc_reject_limit: 1000
+federation_rc_concurrent: 50
+
+rc_login:
+  address:
+    per_second: 100.0
+    burst_count: 100
+  account:
+    per_second: 100.0
+    burst_count: 100
+  failed_attempts:
+    per_second: 100.0
+    burst_count: 100
+enable_registration: false
+enable_registration_without_verification: false
+enable_registration_shared_secret: true
+registration_shared_secret: "ERYx@03_15"
+auto_join_rooms: []
+report_stats: false
+macaroon_secret_key: "-.d_j5AOi@lGe@pp_e.p9N#h47II1RGqhjUuIWlze5nu@cxaZ."
+form_secret: "6v#PCm4qTxcdRuW,79jc2p2vi_:Lip.-S8*BX1SS2ED=@*Qvue"
+signing_key_path: "/home/user/SilentLink/config/localhost.signing.key"
+trusted_key_servers:
+  - server_name: "matrix.org"
+logging:
+  version: 1
+  formatters:
+    verbose:
+      format: '%(asctime)s - %(name)s - %(lineno)d - %(levelname)s - %(message)s'
+  handlers:
+    file:
+      class: logging.handlers.RotatingFileHandler
+      filename: /home/user/SilentLink/logs/synapse.log
+      maxBytes: 10485760
+      backupCount: 3
+      formatter: verbose
+  root:
+    level: INFO
+    handlers: [file]
+
+
+# vim:ft=yaml
